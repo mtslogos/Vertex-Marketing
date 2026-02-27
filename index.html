@@ -1301,6 +1301,135 @@
     }
 
     /* ============================================
+       SEÇÃO 9: AUTORIDADE / CREDENCIAIS
+       ============================================ */
+    .authority {
+      background: var(--color-bg);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .authority::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: -100px;
+      transform: translateY(-50%);
+      width: 500px; height: 500px;
+      background: rgba(249,115,22,0.05);
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+    .authority .container { position: relative; z-index: 1; }
+
+    .authority-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+    @media (min-width: 900px) {
+      .authority-inner { grid-template-columns: 1fr 1fr; gap: var(--space-20); align-items: center; }
+    }
+
+    .authority-lead {
+      font-size: 1.05rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      margin-bottom: var(--space-8);
+    }
+
+    .authority-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .authority-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+    .authority-check {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(249,115,22,0.1);
+      border: 1px solid rgba(249,115,22,0.2);
+      color: var(--color-orange-400);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Grid de stats 2×2 */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    .stat-item {
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-5);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5) var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      background: linear-gradient(to right, var(--color-white), var(--color-orange-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--color-text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+    }
+
+    /* Plataformas */
+    .platforms-block {
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-5);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+    .platforms-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-faint);
+      margin-bottom: var(--space-3);
+    }
+    .platforms-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .platform-badge {
+      padding: 0.25rem 0.65rem;
+      background: rgba(249,115,22,0.07);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: var(--radius-full);
+      color: var(--color-orange-400);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
        SEÇÃO 8: DEPOIMENTOS
        ============================================ */
     .testimonials {
@@ -2508,6 +2637,105 @@
         <p class="testi-note animate" data-delay="2">
           * Depoimentos de clientes reais. Resultados podem variar conforme setor, verba e histórico de campanha.
         </p>
+
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO 9: AUTORIDADE / CREDENCIAIS ====== -->
+    <section class="authority" id="sobre" aria-labelledby="authority-title">
+      <div class="container">
+
+        <div class="authority-inner">
+
+          <!-- Coluna esquerda: copy -->
+          <div class="authority-copy">
+            <div class="animate" data-delay="0">
+              <span class="section-eyebrow">Por que a Vertix</span>
+            </div>
+
+            <h2 class="section-title animate" data-delay="1" id="authority-title">
+              Não somos mais uma<br>
+              <span class="highlight">agência de tráfego.</span>
+            </h2>
+
+            <p class="authority-lead animate" data-delay="2">
+              Somos uma parceira de crescimento. A diferença está em como olhamos para o seu negócio — não por métrica isolada, mas pelo sistema completo.
+            </p>
+
+            <ul class="authority-list animate" data-delay="3">
+              <li class="authority-item">
+                <span class="authority-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M13.333 4L6 11.333 2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>Gestor dedicado ao seu negócio — não um estagiário rotativo</span>
+              </li>
+              <li class="authority-item">
+                <span class="authority-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M13.333 4L6 11.333 2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>Estrutura de dados própria — não dependemos só do painel das plataformas</span>
+              </li>
+              <li class="authority-item">
+                <span class="authority-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M13.333 4L6 11.333 2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>Transparência total: você vê os dados brutos, não só o resumo bonito</span>
+              </li>
+              <li class="authority-item">
+                <span class="authority-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M13.333 4L6 11.333 2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>Cobramos por resultado — sem taxas ocultas, sem contratos longos sem saída</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Coluna direita: números + plataformas -->
+          <div class="authority-stats animate" data-delay="2">
+
+            <div class="stat-grid">
+              <div class="stat-item">
+                <span class="stat-value">+3 anos</span>
+                <span class="stat-label">de experiência em performance</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">R$ 600k+</span>
+                <span class="stat-label">em verba gerenciada</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">4 canais</span>
+                <span class="stat-label">Meta, Google, TikTok, Pinterest</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">30 dias</span>
+                <span class="stat-label">de garantia incondicional</span>
+              </div>
+            </div>
+
+            <!-- Plataformas -->
+            <div class="platforms-block">
+              <p class="platforms-label">Operamos em</p>
+              <div class="platforms-row">
+                <span class="platform-badge">Meta Ads</span>
+                <span class="platform-badge">Google Ads</span>
+                <span class="platform-badge">TikTok Ads</span>
+                <span class="platform-badge">Pinterest Ads</span>
+                <span class="platform-badge">GA4</span>
+                <span class="platform-badge">GTM</span>
+                <span class="platform-badge">CAPI</span>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /authority-inner -->
 
       </div>
     </section>
