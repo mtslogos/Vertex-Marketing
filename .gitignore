@@ -1,3 +1,11 @@
+# Arquivos originais Freepik (não vão para o repo)
+freepik__background__70955.png
+freepik_a-cinematic-closeup-shot-of-a-dark-brushed-black-s_kling_720p_16-9_24fps_73085.mp4
+
+# Sistema
 .DS_Store
-node_modules/
-.claude/
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

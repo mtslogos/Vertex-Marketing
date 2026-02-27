@@ -206,17 +206,15 @@
 
     /* Logo */
     .logo {
-      font-family: var(--font-display);
-      font-size: 1.375rem;
-      font-weight: 600;
-      color: var(--color-white);
-      letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: center;
     }
-    .logo .logo-x {
-      background: linear-gradient(to right, var(--color-orange-400), var(--color-amber-500));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .logo img {
+      display: block;
+      width: 160px;
+      height: 38px;
+      object-fit: cover;
+      object-position: center 50%;
     }
 
     .nav-cta { display: none; }
@@ -250,58 +248,80 @@
     }
 
     /* ============================================
-       SEÇÃO 1: HERO
+       SEÇÃO 1: HERO — Scroll Scrubbing
        ============================================ */
-    .hero {
+
+    /* Wrapper alto: dá espaço para o scroll scrub */
+    .hero-scroll-section {
       position: relative;
-      min-height: 100vh;
+      height: 250vh; /* desktop — JS reduz para 100vh no mobile */
+    }
+
+    /* Mobile: autoplay loop sem scrubbing — altura normal */
+    @media (hover: none) and (pointer: coarse) {
+      .hero-scroll-section { height: 100vh; }
+    }
+
+    /* Área sticky que "prende" o visual enquanto rola */
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      overflow: hidden;
-      padding-top: var(--space-24);
-      padding-bottom: var(--space-20);
     }
 
-    /* Camada de estrelas + grid */
-    .hero-bg-stars,
-    .hero-bg-grid {
+    /* Vídeo de fundo — cobre toda a área */
+    .hero-video {
       position: absolute;
       inset: 0;
-      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
     }
-    .hero-bg-stars { z-index: 0; }
-    .hero-bg-grid  { z-index: 1; }
 
-    /* Glow laranja top-left */
+    /* Overlay de legibilidade sobre o vídeo */
+    .hero-video-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        /* gradiente lateral esquerdo — protege o texto */
+        linear-gradient(to right, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.30) 55%, transparent 100%),
+        /* gradiente vertical — fade para baixo */
+        linear-gradient(to bottom, rgba(5,5,5,0.45) 0%, rgba(5,5,5,0.15) 45%, rgba(5,5,5,0.70) 85%, #050505 100%);
+      z-index: 1;
+    }
+
+    /* Glow laranja top-left (sobrepõe o vídeo) */
     .hero-glow-tl {
       position: absolute;
       top: -100px; left: -100px;
       width: 700px; height: 500px;
-      background: rgba(154,52,18,0.12); /* orange-900/10 */
+      background: rgba(154,52,18,0.18);
       border-radius: 50%;
       filter: blur(120px);
       pointer-events: none;
-      z-index: 0;
-    }
-    /* Glow laranja bottom-right */
-    .hero-glow-br {
-      position: absolute;
-      bottom: -100px; right: -50px;
-      width: 500px; height: 500px;
-      background: rgba(124,45,18,0.15); /* orange-950/20 */
-      border-radius: 50%;
-      filter: blur(100px);
-      pointer-events: none;
-      z-index: 0;
+      z-index: 2;
     }
 
-    .hero .container {
+    .hero-sticky .container {
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .hero-content {
       max-width: 760px;
+    }
+
+    /* Sombra de profundidade para legibilidade sobre o vídeo */
+    .hero-title,
+    .hero-subtitle,
+    .hero-badge,
+    .hero-guarantee {
+      text-shadow: 0 2px 24px rgba(0,0,0,0.6);
     }
 
     /* Badge */
@@ -474,6 +494,956 @@
     }
 
     /* ============================================
+       SEÇÃO 2: PROBLEMAS / DOR
+       ============================================ */
+    .problems {
+      background: var(--color-surface);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glow sutil centralizado */
+    .problems::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: rgba(249, 115, 22, 0.06);
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .problems .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cabeçalho da seção */
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.2rem 0.75rem;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.18);
+      border-radius: var(--radius-full);
+      color: var(--color-orange-400);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-5);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--color-white);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-title .highlight {
+      background: linear-gradient(to right, var(--color-white), var(--color-yellow-200), var(--color-orange-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: var(--space-12);
+    }
+
+    /* Grid de cards */
+    .problems-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-12);
+    }
+
+    @media (min-width: 640px) {
+      .problems-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .problems-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Card de dor */
+    .pain-card {
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-10);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      transition: background 300ms ease, border-color 300ms ease;
+    }
+
+    .pain-card:hover {
+      background: var(--overlay-4);
+      border-color: var(--overlay-20);
+    }
+
+    .pain-card-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.15);
+      border-radius: var(--radius-lg);
+      color: var(--color-orange-400);
+      margin-bottom: var(--space-4);
+      flex-shrink: 0;
+    }
+
+    .pain-card-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-white);
+      line-height: 1.4;
+      margin-bottom: var(--space-3);
+    }
+
+    .pain-card-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+    }
+
+    /* Nota de encerramento */
+    .problems-closing {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      padding: var(--space-6);
+      background: rgba(249, 115, 22, 0.05);
+      border: 1px solid rgba(249, 115, 22, 0.12);
+      border-radius: var(--radius-xl);
+      max-width: 680px;
+    }
+
+    .problems-closing-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(249, 115, 22, 0.1);
+      border-radius: var(--radius-lg);
+      color: var(--color-orange-400);
+      flex-shrink: 0;
+    }
+
+    .problems-closing-text {
+      font-size: 0.9375rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .problems-closing-text strong {
+      color: var(--color-white);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       SEÇÃO 3: AGITAÇÃO / CONSEQUÊNCIAS
+       ============================================ */
+    .agitation {
+      background: var(--color-bg);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .agitation::before {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      right: -100px;
+      width: 500px;
+      height: 400px;
+      background: rgba(249, 115, 22, 0.05);
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .agitation .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Layout split */
+    .agitation-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+      .agitation-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-16);
+        align-items: center;
+      }
+    }
+
+    /* Lado esquerdo — declaração */
+    .agitation-statement {
+      position: relative;
+    }
+
+    .agitation-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--color-white);
+      margin-bottom: var(--space-6);
+    }
+
+    .agitation-quote .highlight {
+      background: linear-gradient(to right, var(--color-white), var(--color-yellow-200), var(--color-orange-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .agitation-desc {
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      max-width: 460px;
+    }
+
+    /* Separador laranja vertical */
+    .agitation-divider {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .agitation-divider {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 5%;
+        height: 90%;
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, rgba(249,115,22,0.2), transparent);
+      }
+    }
+
+    /* Lado direito — custos invisíveis */
+    .agitation-costs {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .cost-item {
+      display: flex;
+      gap: var(--space-5);
+      align-items: flex-start;
+    }
+
+    .cost-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--color-orange-400);
+      opacity: 0.5;
+      min-width: 2.5rem;
+      letter-spacing: -0.04em;
+    }
+
+    .cost-content {}
+
+    .cost-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-white);
+      line-height: 1.4;
+      margin-bottom: var(--space-2);
+    }
+
+    .cost-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+    }
+
+    .cost-item + .cost-item {
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--overlay-5);
+    }
+
+    /* Faixa de virada — bridge para solução */
+    .agitation-bridge {
+      margin-top: var(--space-16);
+      padding: var(--space-8);
+      background: linear-gradient(135deg, rgba(249,115,22,0.06), rgba(249,115,22,0.02));
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: var(--radius-2xl);
+    }
+
+    .agitation-bridge-text {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      color: var(--color-white);
+      line-height: 1.5;
+    }
+
+    .agitation-bridge-text span {
+      color: var(--color-orange-400);
+    }
+
+    /* ============================================
+       SEÇÃO 4: SOLUÇÃO / APRESENTAÇÃO VERTIX
+       ============================================ */
+    .solution {
+      background: var(--color-surface);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glow central sutil */
+    .solution::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 400px;
+      background: rgba(249, 115, 22, 0.05);
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .solution .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cabeçalho centrado */
+    .solution-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-16);
+    }
+
+    .solution-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--color-white);
+      margin-bottom: var(--space-5);
+    }
+
+    .solution-title .highlight {
+      background: linear-gradient(to right, var(--color-white), var(--color-yellow-200), var(--color-orange-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .solution-subtitle {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    /* Grid dos 4 pilares */
+    .solution-pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-12);
+    }
+
+    @media (min-width: 640px) {
+      .solution-pillars { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .solution-pillars { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .pillar-card {
+      position: relative;
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-10);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      transition: background 300ms ease, border-color 300ms ease, transform 300ms ease;
+      overflow: hidden;
+    }
+
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, rgba(249,115,22,0.4), transparent);
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    .pillar-card:hover {
+      background: var(--overlay-4);
+      border-color: rgba(249,115,22,0.2);
+      transform: translateY(-2px);
+    }
+
+    .pillar-card:hover::before {
+      opacity: 1;
+    }
+
+    .pillar-number {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--color-orange-400);
+      opacity: 0.6;
+      margin-bottom: var(--space-4);
+      text-transform: uppercase;
+    }
+
+    .pillar-icon {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.15);
+      border-radius: var(--radius-lg);
+      color: var(--color-orange-400);
+      margin-bottom: var(--space-4);
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-white);
+      line-height: 1.35;
+      margin-bottom: var(--space-3);
+    }
+
+    .pillar-desc {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+    }
+
+    /* Faixa de diferencial — o sistema integrado */
+    .solution-system {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      padding: var(--space-8);
+      background: linear-gradient(135deg, rgba(249,115,22,0.06) 0%, rgba(249,115,22,0.02) 100%);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: var(--radius-2xl);
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .solution-system {
+        grid-template-columns: 1fr auto 1fr;
+        gap: var(--space-8);
+      }
+    }
+
+    .solution-system-text {}
+
+    .solution-system-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-orange-400);
+      margin-bottom: var(--space-3);
+    }
+
+    .solution-system-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      color: var(--color-white);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+
+    .solution-system-headline strong {
+      font-weight: 500;
+      background: linear-gradient(to right, var(--color-yellow-200), var(--color-orange-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .solution-system-divider {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .solution-system-divider {
+        display: block;
+        width: 1px;
+        height: 80px;
+        background: linear-gradient(to bottom, transparent, rgba(249,115,22,0.25), transparent);
+        justify-self: center;
+      }
+    }
+
+    .solution-system-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    .solution-system-desc strong {
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       SEÇÃO 5: SERVIÇOS DETALHADOS
+       ============================================ */
+    .services {
+      background: var(--color-bg);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .services::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: rgba(249, 115, 22, 0.04);
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .services .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .services-header {
+      max-width: 620px;
+      margin-bottom: var(--space-12);
+    }
+
+    /* Carousel horizontal */
+    .services-scroll-wrapper {
+      position: relative;
+    }
+
+    .services-scroll {
+      display: flex;
+      gap: var(--space-5);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: var(--space-2);
+      /* fade nas bordas */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+    }
+    .services-scroll::-webkit-scrollbar { display: none; }
+
+    /* Card de serviço */
+    .service-card {
+      position: relative;
+      flex: 0 0 calc(100% - 1.5rem);
+      scroll-snap-align: start;
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-10);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      transition: border-color 300ms ease, background 300ms ease;
+      overflow: hidden;
+    }
+
+    @media (min-width: 640px) {
+      .service-card { flex: 0 0 calc(50% - 1.25rem); }
+    }
+
+    @media (min-width: 1100px) {
+      .service-card { flex: 0 0 calc(33.333% - 1.5rem); }
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, rgba(249,115,22,0.35), transparent);
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    .service-card:hover {
+      border-color: rgba(249,115,22,0.18);
+      background: var(--overlay-4);
+    }
+    .service-card:hover::after { opacity: 1; }
+
+    /* Cabeçalho do card */
+    .service-card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .service-card-icon {
+      width: 52px; height: 52px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.15);
+      border-radius: var(--radius-xl);
+      color: var(--color-orange-400);
+    }
+
+    .service-card-meta {}
+
+    .service-card-num {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-orange-400);
+      opacity: 0.6;
+      margin-bottom: var(--space-1);
+    }
+
+    .service-card-title {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--color-white);
+      line-height: 1.3;
+    }
+
+    .service-card-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      margin-bottom: var(--space-5);
+    }
+
+    /* Divisor */
+    .service-card-divider {
+      height: 1px;
+      background: var(--overlay-5);
+      margin-bottom: var(--space-5);
+    }
+
+    /* Lista de itens */
+    .service-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .service-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      font-size: 0.8125rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .service-list li::before {
+      content: '';
+      display: block;
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7' stroke='%23fb923c' stroke-width='1' opacity='0.4'/%3E%3Cpath d='M5 8l2 2 4-4' stroke='%23fb923c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    /* Plataformas (badges inline no card tráfego) */
+    .service-platforms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+
+    .service-platform-badge {
+      padding: 0.2rem 0.65rem;
+      background: rgba(249,115,22,0.08);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-orange-400);
+      letter-spacing: 0.02em;
+    }
+
+    /* Feature block (rastreamento) */
+    .service-feature {
+      padding: var(--space-4);
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-5);
+      border-radius: var(--radius-lg);
+    }
+
+    .service-feature + .service-feature {
+      margin-top: var(--space-3);
+    }
+
+    .service-feature-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-white);
+      margin-bottom: var(--space-2);
+    }
+
+    .service-feature-desc {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Dots de paginação */
+    .services-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      margin-top: var(--space-6);
+    }
+
+    .services-dot {
+      width: 6px; height: 6px;
+      border-radius: var(--radius-full);
+      background: var(--overlay-20);
+      cursor: pointer;
+      transition: background 250ms ease, width 250ms ease;
+      border: none;
+      padding: 0;
+    }
+
+    .services-dot.active {
+      width: 20px;
+      background: var(--color-orange-400);
+    }
+
+    /* ============================================
+       SEÇÃO 6: COMO FUNCIONA
+       ============================================ */
+    .how-it-works {
+      background: var(--color-surface);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .how-it-works::before {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 500px;
+      height: 500px;
+      background: rgba(249, 115, 22, 0.05);
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .how-it-works .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .how-it-works-header {
+      max-width: 580px;
+      margin-bottom: var(--space-16);
+    }
+
+    /* Timeline vertical */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    /* Linha conectora vertical */
+    .steps-list::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 20px;
+      bottom: 20px;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        rgba(249,115,22,0.3),
+        rgba(249,115,22,0.15) 50%,
+        transparent
+      );
+    }
+
+    @media (min-width: 768px) {
+      .steps-list::before { left: 23px; }
+    }
+
+    /* Cada passo */
+    .step-item {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: var(--space-5);
+      padding-bottom: var(--space-10);
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .step-item {
+        grid-template-columns: 48px 1fr;
+      }
+    }
+
+    .step-item:last-child {
+      padding-bottom: 0;
+    }
+
+    /* Número do passo */
+    .step-num {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-surface);
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: var(--radius-full);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-orange-400);
+      position: relative;
+      z-index: 1;
+      transition: background 300ms ease, border-color 300ms ease;
+    }
+
+    @media (min-width: 768px) {
+      .step-num { width: 48px; height: 48px; font-size: 0.9rem; }
+    }
+
+    .step-item:hover .step-num {
+      background: rgba(249,115,22,0.08);
+      border-color: rgba(249,115,22,0.5);
+    }
+
+    /* Conteúdo do passo */
+    .step-content {
+      padding-top: 0.6rem;
+    }
+
+    @media (min-width: 768px) {
+      .step-content { padding-top: 0.75rem; }
+    }
+
+    .step-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-orange-400);
+      opacity: 0.7;
+      margin-bottom: var(--space-2);
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 500;
+      color: var(--color-white);
+      line-height: 1.35;
+      margin-bottom: var(--space-3);
+    }
+
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .step-desc strong {
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    /* Badge de tempo/resultado */
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+      padding: 0.2rem 0.65rem;
+      background: rgba(249,115,22,0.06);
+      border: 1px solid rgba(249,115,22,0.12);
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+
+    .step-badge::before {
+      content: '';
+      display: block;
+      width: 5px; height: 5px;
+      background: var(--color-orange-400);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    /* ============================================
        RESPONSIVO
        ============================================ */
     @media (min-width: 768px) {
@@ -491,7 +1461,7 @@
   <header class="header" role="banner">
     <div class="container">
       <a href="#" class="logo" aria-label="Vertix - Página inicial">
-        VERTI<span class="logo-x">X</span>
+        <img src="logo.png" alt="Vertix" width="160" height="38">
       </a>
       <a href="#cta-final" class="btn btn-primary nav-cta" style="font-size:0.9rem; min-height:40px; padding:0.5rem 1.5rem;">
         Falar com Especialista
@@ -501,16 +1471,22 @@
 
   <main>
     <!-- ====== SEÇÃO 1: HERO ====== -->
-    <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-scroll-section" id="hero">
+      <div class="hero-sticky" aria-labelledby="hero-title">
 
-      <!-- Backgrounds -->
-      <div class="hero-bg-stars stars" aria-hidden="true"></div>
-      <div class="hero-bg-grid grid-bg" aria-hidden="true"></div>
-      <div class="hero-glow-tl" aria-hidden="true"></div>
-      <div class="hero-glow-br" aria-hidden="true"></div>
+        <!-- Vídeo scrubbing -->
+        <video id="heroVideo" class="hero-video" preload="auto" muted playsinline>
+          <source src="hero-bg.mp4" type="video/mp4">
+        </video>
 
-      <div class="container">
-        <div class="hero-content">
+        <!-- Overlay de legibilidade -->
+        <div class="hero-video-overlay" aria-hidden="true"></div>
+
+        <!-- Glow laranja top-left -->
+        <div class="hero-glow-tl" aria-hidden="true"></div>
+
+        <div class="container">
+          <div class="hero-content">
 
           <div class="hero-badge animate" data-delay="0" role="status">
             <span class="hero-badge-dot" aria-hidden="true"></span>
@@ -589,6 +1565,475 @@
           </div><!-- /hero-trust -->
         </div><!-- /hero-content -->
       </div><!-- /container -->
+      </div><!-- /hero-sticky -->
+    </div><!-- /hero-scroll-section -->
+
+    <!-- ====== SEÇÃO 2: PROBLEMAS / DOR ====== -->
+    <section class="problems" id="problemas" aria-labelledby="problems-title">
+      <div class="container">
+
+        <div class="animate" data-delay="0">
+          <span class="section-eyebrow">O diagnóstico</span>
+        </div>
+
+        <h2 class="section-title animate" data-delay="1" id="problems-title">
+          Você se reconhece em<br>
+          <span class="highlight">alguma dessas situações?</span>
+        </h2>
+
+        <p class="section-subtitle animate" data-delay="2">
+          A maioria dos negócios que investem em marketing digital enfrenta pelo menos um desses problemas — e muitos nem sabem que o problema existe.
+        </p>
+
+        <div class="problems-grid">
+
+          <!-- Card 1 -->
+          <div class="pain-card animate" data-delay="1">
+            <div class="pain-card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3h18v18H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" rx="2"/>
+                <path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M7 15h2m2 0h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="pain-card-title">Invisto em anúncios mas não sei se está funcionando</h3>
+            <p class="pain-card-desc">Você abre o gerenciador, vê números, mas não consegue dizer com certeza se o dinheiro está voltando — ou para onde está indo.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="pain-card animate" data-delay="2">
+            <div class="pain-card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <path d="M4.93 4.93l14.14 14.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="pain-card-title">O rastreamento não funciona — as campanhas rodam às cegas</h3>
+            <p class="pain-card-desc">Sem dados de qualidade, o algoritmo não aprende, os públicos pioram e o custo por resultado só sobe com o tempo.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="pain-card animate" data-delay="3">
+            <div class="pain-card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="pain-card-title">Já troquei de agência mas o problema continua</h3>
+            <p class="pain-card-desc">Relatórios cheios de métricas de vaidade, mas as vendas não aparecem. Você paga pela gestão e não tem clareza sobre o retorno real.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="pain-card animate" data-delay="4">
+            <div class="pain-card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M3 17l4-8 4 4 4-6 4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 20h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="pain-card-title">A página recebe tráfego, mas as pessoas não compram</h3>
+            <p class="pain-card-desc">Você paga para trazer visitas, mas elas chegam e vão embora. O funil vaza — e cada clique desperdiçado é dinheiro jogado fora.</p>
+          </div>
+
+        </div><!-- /problems-grid -->
+
+        <!-- Nota de encerramento -->
+        <div class="problems-closing animate" data-delay="3">
+          <div class="problems-closing-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="problems-closing-text">
+            <strong>Se você se identificou com qualquer uma dessas situações, não é falta de orçamento nem de produto.</strong> É falta de estrutura. E isso tem solução.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO 3: AGITAÇÃO / CONSEQUÊNCIAS ====== -->
+    <section class="agitation" id="consequencias" aria-labelledby="agitation-title">
+      <div class="container">
+
+        <div class="animate" data-delay="0">
+          <span class="section-eyebrow">O verdadeiro custo</span>
+        </div>
+
+        <div class="agitation-grid">
+
+          <!-- Lado esquerdo: declaração -->
+          <div class="agitation-statement">
+            <h2 class="agitation-quote animate" data-delay="1" id="agitation-title">
+              Cada mês sem estrutura de dados é um mês pagando
+              <span class="highlight"> para alimentar o algoritmo do concorrente.</span>
+            </h2>
+            <p class="agitation-desc animate" data-delay="2">
+              Sem rastreamento correto, suas campanhas ensinam a plataforma com informações erradas. Esse aprendizado incorreto se acumula — e reverter custa tempo, dinheiro e paciência.
+            </p>
+          </div>
+
+          <!-- Lado direito: custos invisíveis -->
+          <div class="agitation-costs">
+
+            <div class="cost-item animate" data-delay="1">
+              <div class="cost-number" aria-hidden="true">01</div>
+              <div class="cost-content">
+                <h3 class="cost-title">Você paga até 3x mais por conversão</h3>
+                <p class="cost-desc">Campanhas com rastreamento ruim precisam de muito mais gasto para encontrar compradores. O custo por aquisição sobe sem que você perceba o motivo.</p>
+              </div>
+            </div>
+
+            <div class="cost-item animate" data-delay="2">
+              <div class="cost-number" aria-hidden="true">02</div>
+              <div class="cost-content">
+                <h3 class="cost-title">O algoritmo aprende errado — e piora com o tempo</h3>
+                <p class="cost-desc">A cada conversão não rastreada, a plataforma otimiza para o perfil errado. Quanto mais tempo passa, mais entorpecida fica a inteligência das suas campanhas.</p>
+              </div>
+            </div>
+
+            <div class="cost-item animate" data-delay="3">
+              <div class="cost-number" aria-hidden="true">03</div>
+              <div class="cost-content">
+                <h3 class="cost-title">Sem dados claros, você não sabe o que escalar</h3>
+                <p class="cost-desc">Medo de aumentar o orçamento por falta de clareza mantém seu negócio estagnado. Você deixa de crescer não por falta de dinheiro, mas por falta de informação.</p>
+              </div>
+            </div>
+
+          </div><!-- /agitation-costs -->
+        </div><!-- /agitation-grid -->
+
+        <!-- Bridge para solução -->
+        <div class="agitation-bridge animate" data-delay="2">
+          <p class="agitation-bridge-text">
+            A boa notícia: tudo isso tem <span>uma causa técnica específica</span> — e uma solução concreta.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO 4: SOLUÇÃO / APRESENTAÇÃO VERTIX ====== -->
+    <section class="solution" id="solucao" aria-labelledby="solution-title">
+      <div class="container">
+
+        <!-- Cabeçalho -->
+        <div class="solution-header">
+          <div class="animate" data-delay="0">
+            <span class="section-eyebrow">A solução</span>
+          </div>
+
+          <h2 class="solution-title animate" data-delay="1" id="solution-title">
+            A Vertix não é uma agência.<br>
+            <span class="highlight">É uma infraestrutura de crescimento.</span>
+          </h2>
+
+          <p class="solution-subtitle animate" data-delay="2">
+            Enquanto a maioria das agências entrega relatórios, a Vertix constrói o sistema que transforma cada real investido em dados, e cada dado em decisão — do tráfego à conversão.
+          </p>
+        </div>
+
+        <!-- 4 Pilares -->
+        <div class="solution-pillars">
+
+          <!-- Pilar 1: Tráfego Pago -->
+          <div class="pillar-card animate" data-delay="1">
+            <p class="pillar-number">01</p>
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="pillar-title">Tráfego Pago</h3>
+            <p class="pillar-desc">Campanhas de alta performance no META Ads e Google Ads com estratégia orientada por dados reais do seu negócio.</p>
+          </div>
+
+          <!-- Pilar 2: Rastreamento -->
+          <div class="pillar-card animate" data-delay="2">
+            <p class="pillar-number">02</p>
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="pillar-title">Rastreamento & Dados</h3>
+            <p class="pillar-desc">Infraestrutura de tracking precisa com Pixel, GTM e CAPI — para que o algoritmo aprenda com os compradores certos.</p>
+          </div>
+
+          <!-- Pilar 3: Páginas & Funis -->
+          <div class="pillar-card animate" data-delay="3">
+            <p class="pillar-number">03</p>
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 9h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M9 21V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="pillar-title">Páginas & Funis</h3>
+            <p class="pillar-desc">Sites, landing pages e páginas de vendas construídas para converter — com copy persuasivo e estrutura técnica otimizada.</p>
+          </div>
+
+          <!-- Pilar 4: Conteúdo & Social -->
+          <div class="pillar-card animate" data-delay="4">
+            <p class="pillar-number">04</p>
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="13" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="2" y="13" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="13" y="13" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="pillar-title">Conteúdo & Social</h3>
+            <p class="pillar-desc">Produção de conteúdo estratégico para redes sociais que aquece audiência, gera autoridade e alimenta o funil de vendas.</p>
+          </div>
+
+        </div><!-- /solution-pillars -->
+
+        <!-- Sistema integrado -->
+        <div class="solution-system animate" data-delay="3">
+          <div class="solution-system-text">
+            <p class="solution-system-label">Por que funciona</p>
+            <p class="solution-system-headline">
+              Os quatro pilares operam como <strong>um único sistema integrado</strong> — e não como serviços isolados.
+            </p>
+          </div>
+          <div class="solution-system-divider" aria-hidden="true"></div>
+          <p class="solution-system-desc">
+            Tráfego sem rastreamento é gasto. Rastreamento sem página otimizada é dado perdido. Página sem conteúdo é clique frio. <strong>A Vertix conecta cada peça — e você só vê o resultado.</strong>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO 5: SERVIÇOS DETALHADOS ====== -->
+    <section class="services" id="servicos" aria-labelledby="services-title">
+      <div class="container">
+
+        <div class="services-header">
+          <div class="animate" data-delay="0">
+            <span class="section-eyebrow">O que está incluso</span>
+          </div>
+          <h2 class="section-title animate" data-delay="1" id="services-title">
+            Tudo que você precisa para <span class="highlight">parar de adivinhar e começar a escalar.</span>
+          </h2>
+          <p class="section-subtitle animate" data-delay="2">
+            Cada serviço foi pensado para funcionar em conjunto — mas pode ser contratado de forma modular, conforme a sua necessidade.
+          </p>
+        </div>
+
+        <div class="services-scroll-wrapper animate" data-delay="2">
+          <div class="services-scroll" id="servicesCarousel" role="list">
+
+            <!-- Card 1: Tráfego Pago -->
+            <div class="service-card" role="listitem">
+              <div class="service-card-head">
+                <div class="service-card-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="service-card-meta">
+                  <p class="service-card-num">01</p>
+                  <h3 class="service-card-title">Tráfego Pago</h3>
+                </div>
+              </div>
+              <p class="service-card-desc">
+                Gestão de campanhas nas principais plataformas do mercado — com estratégia, criatividade e otimização orientada a resultados reais.
+              </p>
+              <div class="service-platforms" aria-label="Plataformas">
+                <span class="service-platform-badge">Meta Ads</span>
+                <span class="service-platform-badge">Google Ads</span>
+                <span class="service-platform-badge">TikTok Ads</span>
+                <span class="service-platform-badge">Pinterest Ads</span>
+              </div>
+              <div class="service-card-divider" aria-hidden="true"></div>
+              <ul class="service-list">
+                <li>Otimização contínua de campanhas</li>
+                <li>Relatórios semanais e mensais</li>
+                <li>Investimento inteligente por canal</li>
+              </ul>
+            </div>
+
+            <!-- Card 2: Rastreamento de Vendas -->
+            <div class="service-card" role="listitem">
+              <div class="service-card-head">
+                <div class="service-card-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="service-card-meta">
+                  <p class="service-card-num">02</p>
+                  <h3 class="service-card-title">Rastreamento de Vendas</h3>
+                </div>
+              </div>
+              <p class="service-card-desc">
+                Infraestrutura de dados que revela cada etapa da jornada do cliente — do clique à conversão.
+              </p>
+              <div class="service-card-divider" aria-hidden="true"></div>
+              <div class="service-feature">
+                <p class="service-feature-title">Google Analytics 4 + UTMs</p>
+                <p class="service-feature-desc">Saiba exatamente de onde vêm suas vendas e identifique os furos no seu funil.</p>
+              </div>
+              <div class="service-feature">
+                <p class="service-feature-title">GTM · Pixel · API de Conversões</p>
+                <p class="service-feature-desc">As três ferramentas integradas para gastar menos e vender mais — com campanhas mais inteligentes e CPA mais baixo.</p>
+              </div>
+            </div>
+
+            <!-- Card 3: Páginas de Vendas -->
+            <div class="service-card" role="listitem">
+              <div class="service-card-head">
+                <div class="service-card-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M3 9h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M9 21V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="service-card-meta">
+                  <p class="service-card-num">03</p>
+                  <h3 class="service-card-title">Páginas de Vendas</h3>
+                </div>
+              </div>
+              <p class="service-card-desc">
+                Páginas otimizadas com carregamento rápido e comunicação persuasiva para converter mais visitantes em clientes.
+              </p>
+              <div class="service-card-divider" aria-hidden="true"></div>
+              <ul class="service-list">
+                <li>Landing pages de alta conversão</li>
+                <li>Sites institucionais profissionais</li>
+                <li>Copy persuasivo estratégico incluso</li>
+                <li>Carregamento ultrarrápido</li>
+                <li>Estrutura técnica focada em conversão</li>
+              </ul>
+            </div>
+
+            <!-- Card 4: Conteúdo & Social Media -->
+            <div class="service-card" role="listitem">
+              <div class="service-card-head">
+                <div class="service-card-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <rect x="13" y="2" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <rect x="2" y="13" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <rect x="13" y="13" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="service-card-meta">
+                  <p class="service-card-num">04</p>
+                  <h3 class="service-card-title">Conteúdo & Social Media</h3>
+                </div>
+              </div>
+              <p class="service-card-desc">
+                Conteúdos com design, edição e comunicação avançados — que atraem o público certo e aumentam o nível de consciência para a sua solução.
+              </p>
+              <div class="service-card-divider" aria-hidden="true"></div>
+              <ul class="service-list">
+                <li>Design e edição profissional</li>
+                <li>Comunicação estratégica e persuasiva</li>
+                <li>Atração do público certo</li>
+                <li>Aumento do nível de consciência</li>
+                <li>Alinhado às campanhas ativas</li>
+              </ul>
+            </div>
+
+          </div><!-- /services-scroll -->
+
+          <!-- Dots de paginação -->
+          <div class="services-dots" role="tablist" aria-label="Serviços">
+            <button class="services-dot active" role="tab" aria-label="Tráfego Pago" data-index="0"></button>
+            <button class="services-dot" role="tab" aria-label="Rastreamento" data-index="1"></button>
+            <button class="services-dot" role="tab" aria-label="Páginas" data-index="2"></button>
+            <button class="services-dot" role="tab" aria-label="Conteúdo" data-index="3"></button>
+          </div>
+        </div><!-- /services-scroll-wrapper -->
+
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO 6: COMO FUNCIONA ====== -->
+    <section class="how-it-works" id="como-funciona" aria-labelledby="hiw-title">
+      <div class="container">
+
+        <div class="how-it-works-header">
+          <div class="animate" data-delay="0">
+            <span class="section-eyebrow">Como funciona</span>
+          </div>
+          <h2 class="section-title animate" data-delay="1" id="hiw-title">
+            Do primeiro contato ao<br>
+            <span class="highlight">resultado mensurável.</span>
+          </h2>
+          <p class="section-subtitle animate" data-delay="2">
+            Um processo estruturado em 4 etapas — pensado para entregar clareza, velocidade e resultado desde o primeiro dia.
+          </p>
+        </div>
+
+        <div class="steps-list">
+
+          <!-- Passo 1 -->
+          <div class="step-item animate" data-delay="1">
+            <div class="step-num" aria-hidden="true">01</div>
+            <div class="step-content">
+              <span class="step-tag">Diagnóstico</span>
+              <h3 class="step-title">Entendemos seu negócio antes de tocar em qualquer campanha</h3>
+              <p class="step-desc">
+                Fazemos uma auditoria completa do seu tráfego atual, rastreamento existente e estrutura de conversão. <strong>Identificamos exatamente onde está o problema</strong> — e o que precisa ser construído do zero.
+              </p>
+              <span class="step-badge">Semana 1</span>
+            </div>
+          </div>
+
+          <!-- Passo 2 -->
+          <div class="step-item animate" data-delay="2">
+            <div class="step-num" aria-hidden="true">02</div>
+            <div class="step-content">
+              <span class="step-tag">Estrutura</span>
+              <h3 class="step-title">Construímos a infraestrutura de dados do zero</h3>
+              <p class="step-desc">
+                Configuramos Pixel, GTM, CAPI e Analytics com rastreamento preciso de cada evento relevante. <strong>A partir daqui, cada conversão é registrada</strong> — e o algoritmo começa a aprender com dados reais.
+              </p>
+              <span class="step-badge">Semanas 1–2</span>
+            </div>
+          </div>
+
+          <!-- Passo 3 -->
+          <div class="step-item animate" data-delay="3">
+            <div class="step-num" aria-hidden="true">03</div>
+            <div class="step-content">
+              <span class="step-tag">Ativação</span>
+              <h3 class="step-title">Lançamos as campanhas com estratégia e criativos testados</h3>
+              <p class="step-desc">
+                Com a estrutura pronta, ativamos as campanhas no META, Google, TikTok ou Pinterest — conforme o seu canal. <strong>Cada real investido já está sendo rastreado</strong> e otimizado em tempo real.
+              </p>
+              <span class="step-badge">A partir da semana 2</span>
+            </div>
+          </div>
+
+          <!-- Passo 4 -->
+          <div class="step-item animate" data-delay="4">
+            <div class="step-num" aria-hidden="true">04</div>
+            <div class="step-content">
+              <span class="step-tag">Crescimento</span>
+              <h3 class="step-title">Otimizamos, escalamos e você acompanha tudo</h3>
+              <p class="step-desc">
+                Com relatórios semanais e mensais, você sabe exatamente o que está acontecendo — sem achismos. <strong>Tomamos decisões baseadas em dados</strong> para escalar o que funciona e cortar o que não funciona.
+              </p>
+              <span class="step-badge">Contínuo</span>
+            </div>
+          </div>
+
+        </div><!-- /steps-list -->
+      </div>
     </section>
 
     <!-- As próximas seções serão adicionadas aqui -->
@@ -597,15 +2042,62 @@
 
   <!-- ====== SCRIPTS ====== -->
   <script>
-    // Header scroll
+    // Header scroll (observa o sticky wrapper do hero)
     const header = document.querySelector('.header');
-    const heroEl = document.querySelector('.hero');
-    if (header && heroEl) {
+    const heroSticky = document.querySelector('.hero-sticky');
+    if (header && heroSticky) {
       new IntersectionObserver(
         ([e]) => header.classList.toggle('scrolled', !e.isIntersecting),
         { threshold: 0.95 }
-      ).observe(heroEl);
+      ).observe(heroSticky);
     }
+
+    // ── HERO VÍDEO: scrubbing (desktop) / autoplay loop (mobile) ──
+    (() => {
+      const section = document.getElementById('hero');
+      const video   = document.getElementById('heroVideo');
+      if (!section || !video) return;
+
+      // Detecta dispositivo touch (mobile/tablet)
+      const isTouchDevice = () =>
+        window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+      if (isTouchDevice()) {
+        // ── MOBILE: autoplay em loop silencioso ────────────────
+        // Reduz a seção para 100vh — sem scrubbing
+        section.style.height = '100vh';
+        video.setAttribute('autoplay', '');
+        video.setAttribute('loop', '');
+        video.muted = true;
+        video.play().catch(() => {});
+      } else {
+        // ── DESKTOP: scroll scrubbing ──────────────────────────
+        video.pause();
+        video.currentTime = 0;
+
+        const syncVideo = () => {
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+          const scrollable = section.offsetHeight - window.innerHeight;
+          const scrolled   = Math.max(0, window.scrollY - sectionTop);
+          const progress   = Math.min(1, scrolled / scrollable);
+          const dur        = video.duration;
+          if (dur && isFinite(dur)) {
+            video.currentTime = progress * dur;
+          }
+        };
+
+        const attach = () => {
+          window.addEventListener('scroll', syncVideo, { passive: true });
+          syncVideo();
+        };
+
+        if (video.readyState >= 1) {
+          attach();
+        } else {
+          video.addEventListener('loadedmetadata', attach, { once: true });
+        }
+      }
+    })();
 
     // Animate on scroll (com blur — Luminous style)
     const animObs = new IntersectionObserver(
@@ -620,6 +2112,39 @@
       { threshold: 0.1 }
     );
     document.querySelectorAll('.animate, .animate-fade').forEach((el) => animObs.observe(el));
+
+    // Carousel dots
+    const carousel = document.getElementById('servicesCarousel');
+    const dots = document.querySelectorAll('.services-dot');
+
+    if (carousel && dots.length) {
+      // Dot click → scroll to card
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const idx = parseInt(dot.dataset.index, 10);
+          const cards = carousel.querySelectorAll('.service-card');
+          if (cards[idx]) {
+            carousel.scrollTo({ left: cards[idx].offsetLeft - 24, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // Scroll → update active dot
+      let scrollTimer;
+      carousel.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          const cards = carousel.querySelectorAll('.service-card');
+          let closestIdx = 0;
+          let minDist = Infinity;
+          cards.forEach((card, i) => {
+            const dist = Math.abs(card.offsetLeft - carousel.scrollLeft - 24);
+            if (dist < minDist) { minDist = dist; closestIdx = i; }
+          });
+          dots.forEach((d, i) => d.classList.toggle('active', i === closestIdx));
+        }, 50);
+      });
+    }
   </script>
 
 </body>
