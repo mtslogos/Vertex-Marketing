@@ -251,77 +251,74 @@
        SEÇÃO 1: HERO — Scroll Scrubbing
        ============================================ */
 
-    /* Wrapper alto: dá espaço para o scroll scrub */
-    .hero-scroll-section {
+    /* ============================================
+       SEÇÃO 1: HERO
+       ============================================ */
+    .hero {
       position: relative;
-      height: 250vh; /* desktop — JS reduz para 100vh no mobile */
-    }
-
-    /* Mobile: autoplay loop sem scrubbing — altura normal */
-    @media (hover: none) and (pointer: coarse) {
-      .hero-scroll-section { height: 100vh; }
-    }
-
-    /* Área sticky que "prende" o visual enquanto rola */
-    .hero-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100svh; /* svh = safe viewport height, respeita barra do browser mobile */
       display: flex;
       align-items: center;
+      overflow: hidden;
+      padding-top: 5.5rem;  /* ~88px: espaço para o header fixo (~60px) + folga */
+      padding-bottom: var(--space-12);
+    }
+    @media (min-width: 768px) {
+      .hero {
+        padding-top: calc(var(--space-24) + 2rem);
+        padding-bottom: var(--space-20);
+      }
     }
 
-    /* Vídeo de fundo — cobre toda a área */
-    .hero-video {
+    /* Imagem de fundo */
+    .hero-bg-img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      object-position: right center; /* logo fica à direita */
       z-index: 0;
+      pointer-events: none;
     }
 
-    /* Overlay de legibilidade sobre o vídeo */
-    .hero-video-overlay {
+    /* Overlay duplo: lateral (protege texto) + vertical (fade p/ baixo) */
+    .hero-overlay {
       position: absolute;
       inset: 0;
       background:
-        /* gradiente lateral esquerdo — protege o texto */
-        linear-gradient(to right, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.30) 55%, transparent 100%),
-        /* gradiente vertical — fade para baixo */
-        linear-gradient(to bottom, rgba(5,5,5,0.45) 0%, rgba(5,5,5,0.15) 45%, rgba(5,5,5,0.70) 85%, #050505 100%);
+        linear-gradient(to right, rgba(5,5,5,0.90) 0%, rgba(5,5,5,0.65) 45%, rgba(5,5,5,0.15) 75%, transparent 100%),
+        linear-gradient(to bottom, rgba(5,5,5,0.30) 0%, transparent 40%, rgba(5,5,5,0.80) 90%, #050505 100%);
       z-index: 1;
     }
 
-    /* Glow laranja top-left (sobrepõe o vídeo) */
+    /* Glow laranja top-left */
     .hero-glow-tl {
       position: absolute;
-      top: -100px; left: -100px;
-      width: 700px; height: 500px;
-      background: rgba(154,52,18,0.18);
+      top: -80px; left: -80px;
+      width: 600px; height: 500px;
+      background: rgba(154,52,18,0.14);
       border-radius: 50%;
       filter: blur(120px);
       pointer-events: none;
       z-index: 2;
     }
 
-    .hero-sticky .container {
+    .hero .container {
       position: relative;
       z-index: 3;
     }
 
     .hero-content {
-      max-width: 760px;
+      max-width: 680px;
     }
 
-    /* Sombra de profundidade para legibilidade sobre o vídeo */
+    /* Sombra no texto para legibilidade */
     .hero-title,
     .hero-subtitle,
     .hero-badge,
     .hero-guarantee {
-      text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
     }
 
     /* Badge */
@@ -411,39 +408,71 @@
 
     /* Trust Bar */
     .hero-trust {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-6);
-      padding-top: var(--space-8);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      padding-top: var(--space-5);
       border-top: 1px solid var(--overlay-5);
     }
+    @media (min-width: 640px) {
+      .hero-trust {
+        display: flex;
+        gap: var(--space-8);
+      }
+    }
+
+    /* Mobile: ícone + texto em coluna */
     .trust-item {
       display: flex;
-      align-items: center;
-      gap: var(--space-3);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
     }
+    @media (min-width: 640px) {
+      .trust-item {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-3);
+      }
+    }
+
     .trust-icon {
-      width: 40px; height: 40px;
+      width: 32px; height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: rgba(249,115,22,0.08);
       border: 1px solid rgba(249,115,22,0.15);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       color: var(--color-orange-400);
       flex-shrink: 0;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
     }
+    @media (min-width: 640px) {
+      .trust-icon { width: 40px; height: 40px; border-radius: var(--radius-lg); font-size: 1rem; }
+    }
+
     .trust-value {
-      font-size: 1.125rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--color-white);
       line-height: 1.2;
     }
+    @media (min-width: 640px) {
+      .trust-value { font-size: 1.125rem; }
+    }
+
     .trust-label {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       color: var(--color-text-faint);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+    }
+    @media (min-width: 640px) {
+      .trust-label { font-size: 0.7rem; letter-spacing: 0.06em; }
     }
 
     /* ============================================
@@ -1471,22 +1500,19 @@
 
   <main>
     <!-- ====== SEÇÃO 1: HERO ====== -->
-    <div class="hero-scroll-section" id="hero">
-      <div class="hero-sticky" aria-labelledby="hero-title">
+    <section class="hero" id="hero" aria-labelledby="hero-title">
 
-        <!-- Vídeo scrubbing -->
-        <video id="heroVideo" class="hero-video" preload="auto" muted playsinline>
-          <source src="hero-bg.mp4" type="video/mp4">
-        </video>
+      <!-- Imagem de fundo -->
+      <img src="hero-bg.png" alt="" class="hero-bg-img" aria-hidden="true">
 
-        <!-- Overlay de legibilidade -->
-        <div class="hero-video-overlay" aria-hidden="true"></div>
+      <!-- Overlay de legibilidade -->
+      <div class="hero-overlay" aria-hidden="true"></div>
 
-        <!-- Glow laranja top-left -->
-        <div class="hero-glow-tl" aria-hidden="true"></div>
+      <!-- Glow laranja top-left -->
+      <div class="hero-glow-tl" aria-hidden="true"></div>
 
-        <div class="container">
-          <div class="hero-content">
+      <div class="container">
+        <div class="hero-content">
 
           <div class="hero-badge animate" data-delay="0" role="status">
             <span class="hero-badge-dot" aria-hidden="true"></span>
@@ -1565,8 +1591,7 @@
           </div><!-- /hero-trust -->
         </div><!-- /hero-content -->
       </div><!-- /container -->
-      </div><!-- /hero-sticky -->
-    </div><!-- /hero-scroll-section -->
+    </section><!-- /hero -->
 
     <!-- ====== SEÇÃO 2: PROBLEMAS / DOR ====== -->
     <section class="problems" id="problemas" aria-labelledby="problems-title">
@@ -2042,62 +2067,15 @@
 
   <!-- ====== SCRIPTS ====== -->
   <script>
-    // Header scroll (observa o sticky wrapper do hero)
+    // Header scroll — adiciona .scrolled quando sai do hero
     const header = document.querySelector('.header');
-    const heroSticky = document.querySelector('.hero-sticky');
-    if (header && heroSticky) {
+    const heroEl = document.querySelector('.hero');
+    if (header && heroEl) {
       new IntersectionObserver(
         ([e]) => header.classList.toggle('scrolled', !e.isIntersecting),
-        { threshold: 0.95 }
-      ).observe(heroSticky);
+        { threshold: 0.1 }
+      ).observe(heroEl);
     }
-
-    // ── HERO VÍDEO: scrubbing (desktop) / autoplay loop (mobile) ──
-    (() => {
-      const section = document.getElementById('hero');
-      const video   = document.getElementById('heroVideo');
-      if (!section || !video) return;
-
-      // Detecta dispositivo touch (mobile/tablet)
-      const isTouchDevice = () =>
-        window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-      if (isTouchDevice()) {
-        // ── MOBILE: autoplay em loop silencioso ────────────────
-        // Reduz a seção para 100vh — sem scrubbing
-        section.style.height = '100vh';
-        video.setAttribute('autoplay', '');
-        video.setAttribute('loop', '');
-        video.muted = true;
-        video.play().catch(() => {});
-      } else {
-        // ── DESKTOP: scroll scrubbing ──────────────────────────
-        video.pause();
-        video.currentTime = 0;
-
-        const syncVideo = () => {
-          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-          const scrollable = section.offsetHeight - window.innerHeight;
-          const scrolled   = Math.max(0, window.scrollY - sectionTop);
-          const progress   = Math.min(1, scrolled / scrollable);
-          const dur        = video.duration;
-          if (dur && isFinite(dur)) {
-            video.currentTime = progress * dur;
-          }
-        };
-
-        const attach = () => {
-          window.addEventListener('scroll', syncVideo, { passive: true });
-          syncVideo();
-        };
-
-        if (video.readyState >= 1) {
-          attach();
-        } else {
-          video.addEventListener('loadedmetadata', attach, { once: true });
-        }
-      }
-    })();
 
     // Animate on scroll (com blur — Luminous style)
     const animObs = new IntersectionObserver(
