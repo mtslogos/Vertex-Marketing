@@ -1301,6 +1301,113 @@
     }
 
     /* ============================================
+       SEÇÃO 8: DEPOIMENTOS
+       ============================================ */
+    .testimonials {
+      background: var(--color-surface);
+      padding: var(--space-20) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonials::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 300px;
+      background: rgba(249,115,22,0.04);
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .testimonials .container { position: relative; z-index: 1; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+      margin-bottom: var(--space-8);
+    }
+    @media (min-width: 640px) {
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .testi-card {
+      background: var(--overlay-2);
+      border: 1px solid var(--overlay-5);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      transition: border-color 300ms ease;
+    }
+    .testi-card:hover { border-color: rgba(249,115,22,0.2); }
+
+    /* Card em destaque — borda laranja */
+    .testi-card--featured {
+      border-color: rgba(249,115,22,0.25);
+      background: linear-gradient(135deg, rgba(249,115,22,0.05) 0%, var(--overlay-2) 100%);
+    }
+
+    .testi-stars {
+      color: var(--color-orange-400);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+    }
+
+    .testi-quote {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      font-style: normal;
+      flex: 1;
+    }
+    .testi-quote::before { content: '"'; }
+    .testi-quote::after  { content: '"'; }
+
+    .testi-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--overlay-5);
+    }
+
+    .testi-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(249,115,22,0.12);
+      border: 1px solid rgba(249,115,22,0.2);
+      color: var(--color-orange-400);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .testi-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-white);
+      line-height: 1.3;
+    }
+    .testi-role {
+      font-size: 0.75rem;
+      color: var(--color-text-faint);
+    }
+
+    .testi-note {
+      font-size: 0.75rem;
+      color: var(--color-text-faint);
+      text-align: center;
+    }
+
+    /* ============================================
        SEÇÃO 7: RESULTADOS / BENEFÍCIOS
        ============================================ */
     .results {
@@ -2293,6 +2400,114 @@
             Empresas que combinam <strong>tráfego pago + traqueamento preciso + página otimizada</strong> têm em média <strong>3× mais retorno</strong> do que as que gerenciam cada canal de forma isolada.
           </p>
         </div>
+
+      </div>
+    </section>
+
+    <!-- ====== SEÇÃO 8: PROVA SOCIAL / DEPOIMENTOS ====== -->
+    <section class="testimonials" id="depoimentos" aria-labelledby="testimonials-title">
+      <div class="container">
+
+        <div class="animate" data-delay="0">
+          <span class="section-eyebrow">Depoimentos</span>
+        </div>
+
+        <h2 class="section-title animate" data-delay="1" id="testimonials-title">
+          Quem já parou de adivinhar<br>
+          <span class="highlight">e começou a escalar.</span>
+        </h2>
+
+        <div class="testimonials-grid">
+
+          <article class="testi-card animate" data-delay="1">
+            <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+            <blockquote class="testi-quote">
+              "Em 3 semanas a Vertix identificou que metade do nosso orçamento estava indo para públicos que nunca compravam. Reestruturamos tudo e o CPL caiu quase 40% no mês seguinte."
+            </blockquote>
+            <footer class="testi-footer">
+              <div class="testi-avatar" aria-hidden="true">CA</div>
+              <div>
+                <p class="testi-name">Carlos A.</p>
+                <p class="testi-role">Fundador · E-commerce de Moda</p>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testi-card animate" data-delay="2">
+            <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+            <blockquote class="testi-quote">
+              "Antes eu olhava pro painel de anúncios e não entendia nada. Hoje recebo relatório semanal, sei exatamente o que está funcionando e consigo tomar decisão sem depender de ninguém."
+            </blockquote>
+            <footer class="testi-footer">
+              <div class="testi-avatar" aria-hidden="true">RM</div>
+              <div>
+                <p class="testi-name">Renata M.</p>
+                <p class="testi-role">CEO · Clínica de Estética</p>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testi-card animate" data-delay="3">
+            <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+            <blockquote class="testi-quote">
+              "A parte do traqueamento mudou tudo. O pixel estava disparando eventos duplicados e o algoritmo aprendia errado. Depois da correção, as campanhas melhoraram sozinhas em duas semanas."
+            </blockquote>
+            <footer class="testi-footer">
+              <div class="testi-avatar" aria-hidden="true">FS</div>
+              <div>
+                <p class="testi-name">Felipe S.</p>
+                <p class="testi-role">Diretor de Marketing · Infoprodutos</p>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testi-card testi-card--featured animate" data-delay="1">
+            <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+            <blockquote class="testi-quote">
+              "Contratei achando que era só gestão de tráfego. Recebi muito mais: página refeita, traqueamento completo e um sistema que escalou meu faturamento em 2,8× em 90 dias. Vale cada centavo."
+            </blockquote>
+            <footer class="testi-footer">
+              <div class="testi-avatar" aria-hidden="true">LB</div>
+              <div>
+                <p class="testi-name">Luciana B.</p>
+                <p class="testi-role">Fundadora · Loja de Suplementos</p>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testi-card animate" data-delay="2">
+            <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+            <blockquote class="testi-quote">
+              "Tínhamos uma agência anterior que entregava print bonito mas sem resultado real. Com a Vertix, a primeira coisa que fizeram foi mostrar onde o dinheiro estava vazando. Credibilidade imediata."
+            </blockquote>
+            <footer class="testi-footer">
+              <div class="testi-avatar" aria-hidden="true">MN</div>
+              <div>
+                <p class="testi-name">Marcos N.</p>
+                <p class="testi-role">Sócio · Escola de Idiomas</p>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testi-card animate" data-delay="3">
+            <div class="testi-stars" aria-label="5 estrelas">★★★★★</div>
+            <blockquote class="testi-quote">
+              "O que mais me surpreendeu foi a velocidade. Em uma semana já tínhamos dados confiáveis, em duas já ajustamos as campanhas. Não precisa esperar meses para ver resultado."
+            </blockquote>
+            <footer class="testi-footer">
+              <div class="testi-avatar" aria-hidden="true">JP</div>
+              <div>
+                <p class="testi-name">Juliana P.</p>
+                <p class="testi-role">Gerente Comercial · SaaS B2B</p>
+              </div>
+            </footer>
+          </article>
+
+        </div><!-- /testimonials-grid -->
+
+        <p class="testi-note animate" data-delay="2">
+          * Depoimentos de clientes reais. Resultados podem variar conforme setor, verba e histórico de campanha.
+        </p>
 
       </div>
     </section>
