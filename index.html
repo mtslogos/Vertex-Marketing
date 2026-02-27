@@ -277,9 +277,14 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: right center; /* logo fica à direita */
+      object-position: 70% 30%; /* mobile: mostra parte central-superior da imagem */
       z-index: 0;
       pointer-events: none;
+    }
+    @media (min-width: 768px) {
+      .hero-bg-img {
+        object-position: right center; /* desktop: logo à direita */
+      }
     }
 
     /* Overlay duplo: lateral (protege texto) + vertical (fade p/ baixo) */
