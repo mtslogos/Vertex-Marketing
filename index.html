@@ -270,20 +270,30 @@
       }
     }
 
-    /* Imagem de fundo */
+    /* Imagem de fundo — com suporte a parallax */
     .hero-bg-img {
       position: absolute;
-      inset: 0;
+      top: -20%;        /* margem para o parallax descer */
+      left: 0;
       width: 100%;
-      height: 100%;
+      height: 140%;     /* altura extra para cobrir o movimento */
       object-fit: cover;
-      object-position: 70% 30%; /* mobile: mostra parte central-superior da imagem */
+      object-position: 70% 30%; /* mobile */
       z-index: 0;
       pointer-events: none;
+      will-change: transform;   /* GPU acceleration */
     }
     @media (min-width: 768px) {
       .hero-bg-img {
         object-position: right center; /* desktop: logo à direita */
+      }
+    }
+    /* Desativa parallax para quem prefere menos movimento */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg-img {
+        top: 0;
+        height: 100%;
+        will-change: auto;
       }
     }
 
@@ -3566,6 +3576,30 @@
         { threshold: 0.1 }
       ).observe(heroEl);
     }
+
+    // Parallax hero — imagem move mais lenta que o scroll
+    (function() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const heroBg = document.querySelector('.hero-bg-img');
+      if (!heroBg || prefersReduced) return;
+
+      const FACTOR = 0.2; // 20% da velocidade do scroll
+      let rafId = null;
+
+      function applyParallax() {
+        const scrollY = window.scrollY;
+        const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
+        // Só aplica enquanto a hero está visível
+        if (scrollY <= heroHeight + 100) {
+          heroBg.style.transform = `translateY(${scrollY * FACTOR}px)`;
+        }
+        rafId = null;
+      }
+
+      window.addEventListener('scroll', function() {
+        if (!rafId) rafId = requestAnimationFrame(applyParallax);
+      }, { passive: true });
+    })();
 
     // Animate on scroll (com blur — Luminous style)
     const animObs = new IntersectionObserver(
