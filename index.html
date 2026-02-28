@@ -3577,21 +3577,27 @@
       ).observe(heroEl);
     }
 
-    // Parallax hero — imagem move mais lenta que o scroll
+    // Parallax + blur progressivo na hero
     (function() {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const heroBg = document.querySelector('.hero-bg-img');
       if (!heroBg || prefersReduced) return;
 
-      const FACTOR = 0.2; // 20% da velocidade do scroll
+      const FACTOR   = 0.2;  // parallax: 20% da velocidade do scroll
+      const MAX_BLUR = 12;   // blur máximo em px (atingido no final da hero)
       let rafId = null;
 
       function applyParallax() {
-        const scrollY = window.scrollY;
-        const heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
-        // Só aplica enquanto a hero está visível
+        const scrollY     = window.scrollY;
+        const heroHeight  = heroEl ? heroEl.offsetHeight : window.innerHeight;
+
         if (scrollY <= heroHeight + 100) {
+          // Progresso de 0 (topo) a 1 (base da hero)
+          const progress = Math.min(scrollY / heroHeight, 1);
+          const blur     = progress * MAX_BLUR;
+
           heroBg.style.transform = `translateY(${scrollY * FACTOR}px)`;
+          heroBg.style.filter    = `blur(${blur.toFixed(2)}px)`;
         }
         rafId = null;
       }
